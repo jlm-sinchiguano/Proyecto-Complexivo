@@ -1,0 +1,43 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Editar Cotización</div>
+  <div class="page__content shadow p-3 position-relative">
+      <form [formGroup]="myForm" class="p-fluid">
+          <div class="form-group">
+              <div class="field">
+                  <label class="label" for="name">Nombre de la Cotización*</label>
+                  <input pInputText id="nameQuotation" type="text" formControlName="nameQuotation">
+                  <p-message *ngIf="nameField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+                  </p-message>
+                  <p-message *ngIf="nameField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+                  </p-message>
+                  <p-message *ngIf="nameField.errors?.['maxlength']" severity="error" text="Máximo 150 caracteres">
+                  </p-message>
+                  <i *ngIf="nameField.valid" class="pi pi-check-circle"></i>
+              </div>
+
+              <div class="field">
+                  <label class="label" for="name">Descripción:</label>
+                  <input pInputText id="descriptionQuotation" type="text" formControlName="descriptionQuotation">
+                  <p-message *ngIf="descriptionField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+                  </p-message>
+                  <p-message *ngIf="descriptionField.errors?.['maxlength']" severity="error" text="Máximo 150 caracteres">
+                  </p-message>
+                  <i *ngIf="descriptionField.valid" class="pi pi-check-circle"></i>
+              </div>
+              <div id="percentageProfit" class="field">
+                  <label for="percentageProfit"> Porcentaje de Ganancia* </label>
+                  <input pInputText type="number" formControlName="percentageProfit">
+                  <p-message *ngIf="percentageField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+                  </p-message>
+                  <p-message *ngIf="percentageField.errors?.['min']" severity="error" text="Mínimo 0.1">
+                  </p-message>
+                  <p-message *ngIf="percentageField.errors?.['max']" severity="error" text="Máximo 1000">
+                  </p-message>
+                  <i *ngIf="percentageField.valid" class="pi pi-check-circle"></i>
+                </div>
+              <button type="submit" class="btn btn-primary" (click)="update()" routerLinkActive="router-link-active">Guardar</button>
+
+          </div>
+      </form>
+  </div>
+</div>

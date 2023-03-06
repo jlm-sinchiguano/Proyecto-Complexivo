@@ -1,0 +1,139 @@
+<div class="container-fluid page">
+    <div class="d-flex page__box p-3 mt-2">Unidades de Medida</div>
+    <div class="page__content shadow p-3  position-relative">
+        <div>
+            <button type="button" class="btn btn-success" (click)="togglePopup()">
+                <mat-icon>add_circle_outline</mat-icon> Crear Nuevo
+            </button>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Abreviatura</th>
+                        <th>Tipo de medida</th>
+                        <th>Valor equivalencia</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let unit of units">
+                        <td>{{unit.nameUnitMeasure}}</td>
+                        <td>{{unit.abbreviation}}</td>
+                        <td>{{unit.idtypeMaterial?.nameTypeMaterial}}</td>
+                        <td>{{unit.multiplication}}</td>
+                        <td>
+                            <button type="button" class="btn2 btn-info" (click)="togglePopupEditar(); show(unit.idUnitMeasure!)"  routerLinkActive="router-link-active"  label="Ver">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button type="button" class="btn2 btn-danger" (click)="destroy(unit.idUnitMeasure!)" routerLinkActive="router-link-active"  label="Ver">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Crear nuevo -->
+<div class="popup" *ngIf="isPopupVisible1">
+    <div id="formulario" class="popup-inner">
+        <h2>Nueva Unidad</h2>
+        <form [formGroup]="myForm" (ngSubmit)="store()" class="p-fluid">
+            <div class="field">
+                <label for="typeMaterial">Tipo de Material: </label>
+                <p-dropdown id="typeMaterial" [options]="types"
+                    formControlName="typeMaterial" optionLabel="nameTypeMaterial" optionValue="idTypeMaterial" [autoDisplayFirst]="false">
+                </p-dropdown>
+            </div>
+            <div id="nombre" class="field">
+                <label for="nameUnitMeasure"> Nombre* </label>
+                <input pInputText type="text" formControlName="nameUnitMeasure">
+                <p-message *ngIf="nameUnitField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+                </p-message>
+                <p-message *ngIf="nameUnitField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+                </p-message>
+                <p-message *ngIf="nameUnitField.errors?.['maxlength']" severity="error" text="Máximo 50 caracteres">
+                </p-message>
+                <i *ngIf="nameUnitField.valid" class="pi pi-check-circle"></i>
+            </div>
+            <div id="abreviatura" class="field">
+                <label for="abbreviation"> Abreviatura* </label>
+                <input pInputText type="text" formControlName="abbreviation">
+                <p-message *ngIf="abbreviationField.errors?.['required']" severity="error"
+                    text="Este campo es obligatorio">
+                </p-message>
+                <p-message *ngIf="abbreviationField.errors?.['minlength']" severity="error" text="Mínimo 1 caracteres">
+                </p-message>
+                <p-message *ngIf="abbreviationField.errors?.['maxlength']" severity="error" text="Máximo 5 caracteres">
+                </p-message>
+                <i *ngIf="abbreviationField.valid" class="pi pi-check-circle"></i>
+            </div>
+            <div id="equivalencia" class="field">
+                <label for="multiplication"> Equivalencia* </label>
+                <input pInputText type="number" formControlName="multiplication">
+                <p-message *ngIf="multiplicationField.errors?.['required']" severity="error"
+                    text="Este campo es obligatorio">
+                </p-message>
+                <p-message *ngIf="multiplicationField.errors?.['min']" severity="error" text="Mínimo 0.0001">
+                </p-message>
+                <i *ngIf="multiplicationField.valid" class="pi pi-check-circle"></i>
+            </div>
+            <button type="submit" class="btn btn-primary" routerLinkActive="router-link-active">Guardar</button>
+        </form>
+        <button class="close-btn" (click)="togglePopup()">Cerrar</button>
+    </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="popup" *ngIf="isPopupVisible2">
+    <div id="formulario" class="popup-inner">
+        <h2>Editar Unidad</h2>
+        <form [formGroup]="myForm" (ngSubmit)="update()" class="p-fluid">
+            <div class="field">
+                <label for="typeMaterial">Tipo de Material: </label>
+                <p-dropdown id="typeMaterial" [options]="types" 
+                    formControlName="typeMaterial" optionLabel="nameTypeMaterial" optionValue="idTypeMaterial">
+                </p-dropdown>
+            </div>
+            <div  class="field">
+                <label for="nameUnitMeasure"> Nombre* </label>
+                <input pInputText id="nameUnitMeasure" type="text" formControlName="nameUnitMeasure">
+                <p-message *ngIf="nameUnitField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+                </p-message>
+                <p-message *ngIf="nameUnitField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+                </p-message>
+                <p-message *ngIf="nameUnitField.errors?.['maxlength']" severity="error" text="Máximo 50 caracteres">
+                </p-message>
+                <i *ngIf="nameUnitField.valid" class="pi pi-check-circle"></i>
+            </div>
+            <div class="field">
+                <label for="abbreviation"> Abreviatura* </label>
+                <input pInputText  id="abbreviation" type="text" formControlName="abbreviation">
+                <p-message *ngIf="abbreviationField.errors?.['required']" severity="error"
+                    text="Este campo es obligatorio">
+                </p-message>
+                <p-message *ngIf="abbreviationField.errors?.['minlength']" severity="error" text="Mínimo 1 caracteres">
+                </p-message>
+                <p-message *ngIf="abbreviationField.errors?.['maxlength']" severity="error" text="Máximo 5 caracteres">
+                </p-message>
+                <i *ngIf="abbreviationField.valid" class="pi pi-check-circle"></i>
+            </div>
+            <div  class="field">
+                <label for="multiplication"> Equivalencia* </label>
+                <input pInputText id="multiplication" type="number" formControlName="multiplication">
+                <p-message *ngIf="multiplicationField.errors?.['required']" severity="error"
+                    text="Este campo es obligatorio">
+                </p-message>
+                <p-message *ngIf="multiplicationField.errors?.['min']" severity="error" text="Mínimo 0.0001">
+                </p-message>
+                <i *ngIf="multiplicationField.valid" class="pi pi-check-circle"></i>
+            </div>
+            <button type="submit" class="btn btn-primary" routerLinkActive="router-link-active" >Guardar</button>
+        </form>
+        <button class="close-btn" (click)="togglePopupEditar()">Cerrar</button>
+    </div>
+</div>
+

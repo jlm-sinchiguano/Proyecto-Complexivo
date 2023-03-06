@@ -1,0 +1,48 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Cotizaciones</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div>
+      <button type="submit" class="btn btn-success">
+        <a class="a" routerLink='/create-quotation'>
+          <mat-icon class="iconC">add_circle_outline</mat-icon> Crear Cotización
+        </a>
+      </button>
+    </div>
+
+    <section style="background-color: #eee;">
+      <div class="py-5">
+        <div class="container">
+          <section class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col-md-4" *ngFor="let quotation of quotations">
+              <div class="card h-100 text-center">
+                <div class="card-body">
+                  <span>{{quotation.nameQuotation}}</span>
+                  <h6 class="text-success">Precio Cotización</h6>
+                  <div>
+                    <button type="submit" class="btnE btn-info" routerLinkActive="router-link-active" label="Ver">
+                      <mat-icon class="iconE" routerLink='/edit-quotation/{{quotation.idQuotation}}'>edit</mat-icon>
+                    </button>
+                    <button type="button" class="btnE btn-danger" (click)="destroy(quotation.idQuotation!)"
+                      routerLinkActive="router-link-active" label="Ver">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-primary"
+                      routerLink='/detail-quotation/{{quotation.idQuotation}}' routerLinkActive="router-link-active"
+                      label="Ver">
+                      Detalle
+                    </button>
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

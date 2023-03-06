@@ -1,0 +1,173 @@
+<div class="container-fluid page">
+    <div class="d-flex page__box p-3 mt-2">Editar Material</div>
+    <div class="page__content shadow p-3 position-relative">
+
+        <form [formGroup]="myForm" (ngSubmit)="update()" class="p-fluid">
+            <div class="form-group">
+                <div class="field">
+                    <label class="label" for="name">Nombre del Material</label>
+                    <input pInputText id="nameMaterial" type="text" formControlName="nameMaterial">
+                    <p-message *ngIf="nameField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+                    </p-message>
+                    <p-message *ngIf="nameField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+                    </p-message>
+                    <p-message *ngIf="nameField.errors?.['maxlength']" severity="error" text="Máximo 150 caracteres">
+                    </p-message>
+                    <i *ngIf="nameField.valid" class="pi pi-check-circle"></i>
+                </div>
+                <div class="field">
+                    <label class="label" for="name">Tipo de Material</label>
+                    <p-dropdown id="typeMaterial" [options]="types" [(ngModel)]="selectedType"
+                        [autoDisplayFirst]="false" formControlName="typeMaterial" optionLabel="nameTypeMaterial"
+                        optionValue="nameTypeMaterial" (onChange)="onSelectedOption($event)">
+                    </p-dropdown>
+                </div>
+                <div *ngIf="selectedType === 'Longitud'">
+                    <div class="field">
+                        <label for="unitMeasure">Unidad de Medida: </label>
+                        <p-dropdown id="unitMeasure" [options]="unitL" formControlName="idUnitMeasure"
+                            [(ngModel)]="longitude" optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+                        </p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="widthMaterial">Ancho del material:</label>
+                        <input pInputText id="widthMaterial" type="number" formControlName="widthMaterial">
+                        <p-message *ngIf="widthField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="widthField.errors?.['min']" severity="error" text="Mínimo 0.1">
+                        </p-message>
+                        <p-message *ngIf="widthField.errors?.['max']" severity="error" text="Máximo 500">
+                        </p-message>
+                        <i *ngIf="widthField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="lengthMaterial">Largo del material:</label>
+                        <input pInputText id="lengthMaterial" type="number" formControlName="lengthMaterial">
+                        <p-message *ngIf="lengthField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="lengthField.errors?.['min']" severity="error" text="Mínimo 0.1">
+                        </p-message>
+                        <p-message *ngIf="lengthField.errors?.['max']" severity="error" text="Máximo 500">
+                        </p-message>
+                        <i *ngIf="lengthField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="priceMaterial">Precio del material:</label>
+                        <input pInputText id="priceMaterial" type="number" formControlName="priceMaterial">
+                        <p-message *ngIf="priceField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['min']" severity="error" text="Mínimo 0.00001">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['max']" severity="error" text="Máximo 50000">
+                        </p-message>
+                        <i *ngIf="priceField.valid" class="pi pi-check-circle"></i>
+                    </div>
+
+                </div>
+                <div *ngIf="selectedType === 'Peso'">
+                    <div class="field">
+                        <label for="unitMeasure">Unidad de Medida: </label>
+                        <p-dropdown id="unitMeasure" [options]="unitP" formControlName="idUnitMeasure"
+                            [(ngModel)]="weight" optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+                        </p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="weightMaterial">Peso:</label>
+                        <input pInputText id="weightMaterial" type="number" formControlName="weightMaterial">
+                        <p-message *ngIf="weightField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="weightField.errors?.['min']" severity="error" text="Mínimo 0.1">
+                        </p-message>
+                        <p-message *ngIf="weightField.errors?.['max']" severity="error" text="Máximo 5000">
+                        </p-message>
+                        <i *ngIf="weightField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="priceMaterial">Precio del material:</label>
+                        <input pInputText id="priceMaterial" type="number" formControlName="priceMaterial">
+                        <p-message *ngIf="priceField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['min']" severity="error" text="Mínimo 0.00001">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['max']" severity="error" text="Máximo 50000">
+                        </p-message>
+                        <i *ngIf="priceField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                </div>
+                <div *ngIf="selectedType === 'Cantidad'">
+                    <div class="field">
+                        <label for="unitMeasure">Unidad de Medida: </label>
+                        <p-dropdown id="unitMeasure" [options]="unitC" formControlName="idUnitMeasure"
+                            [(ngModel)]="quantity" optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+                        </p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="quantityMaterial">Cantidad:</label>
+                        <input pInputText id="quantityMaterial" type="number" formControlName="quantityMaterial">
+                        <p-message *ngIf="quantityField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="quantityField.errors?.['pattern']" severity="error" text="Debe ingresar un número entero">
+                        </p-message>
+                        <p-message *ngIf="quantityField.errors?.['min']" severity="error" text="Mínimo 1">
+                        </p-message>
+                        <p-message *ngIf="quantityField.errors?.['max']" severity="error" text="Máximo 5000">
+                        </p-message>
+                        <i *ngIf="quantityField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="priceMaterial">Precio del material:</label>
+                        <input pInputText id="priceMaterial" type="number" formControlName="priceMaterial">
+                        <p-message *ngIf="priceField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['min']" severity="error" text="Mínimo 0.00001">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['max']" severity="error" text="Máximo 50000">
+                        </p-message>
+                        <i *ngIf="priceField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                </div>
+                <div *ngIf="selectedType === 'Volumen'">
+                    <div class="field">
+                        <label for="unitMeasure">Unidad de Medida: </label>
+                        <p-dropdown id="unitMeasure" [options]="unitV" formControlName="idUnitMeasure"
+                            [(ngModel)]="volume" optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+                        </p-dropdown>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="weightMaterial">Volumen del material:</label>
+                        <input pInputText id="weightMaterial" type="number" formControlName="weightMaterial">
+                        <p-message *ngIf="weightField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="weightField.errors?.['min']" severity="error" text="Mínimo 0.1">
+                        </p-message>
+                        <p-message *ngIf="weightField.errors?.['max']" severity="error" text="Máximo 5000">
+                        </p-message>
+                        <i *ngIf="weightField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="priceMaterial">Precio del material:</label>
+                        <input pInputText id="priceMaterial" type="number" formControlName="priceMaterial">
+                        <p-message *ngIf="priceField.errors?.['required']" severity="error"
+                            text="Este campo es obligatorio">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['min']" severity="error" text="Mínimo 0.00001">
+                        </p-message>
+                        <p-message *ngIf="priceField.errors?.['max']" severity="error" text="Máximo 50000">
+                        </p-message>
+                        <i *ngIf="priceField.valid" class="pi pi-check-circle"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" routerLinkActive="router-link-active">Guardar</button>
+
+            </div>
+        </form>
+    </div>
+</div>

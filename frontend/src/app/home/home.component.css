@@ -1,0 +1,41 @@
+.btnE {
+    padding: 4px;
+    font-size: 10px;
+    
+}
+
+.a {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.iconC {
+    vertical-align: middle;
+    margin-right: 1rem;
+}
+.page {
+    color: white;
+    padding: 0 1rem;
+    background: #c5a9fb;
+}
+.page__box {
+    min-height: 120px;
+    background: #1e293b;
+    margin: 0 -1rem;
+    font-size: 36px;
+}
+.page__content {
+    min-height: calc(100vh - 178px);
+    border-radius: 10px;
+    margin-top: -2rem;
+    background: white;
+    color: black;
+    font-size: 2rem;
+}
+.page__content-data {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+

@@ -1,0 +1,215 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Detalle Cotización</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div>
+      <button type="button" class="btn btn-success" (click)="togglePopup()">
+        <mat-icon>add_circle_outline</mat-icon> Añadir Material
+      </button>
+
+      <button type="button" class="btn btn-success" (click)="togglePopup2()">
+        <mat-icon>add_circle_outline</mat-icon> Añadir Mano de Obra
+      </button>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Precio usado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detailMaterial of detailMaterials">
+            <td>{{detailMaterial.material?.nameMaterial}}</td>
+            <td>{{detailMaterial.priceDetail}}</td>
+            <td>
+              <button type="button" class="btn2 btn-danger" (click)="destroyM(detailMaterial.idDetail!)"
+                routerLinkActive="router-link-active" label="Ver">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+          <tr *ngFor="let detailHand of detailHands">
+            <td>{{detailHand.handWork?.nameHandWork}}</td>
+            <td>{{detailHand.priceTime}}</td>
+            <td>
+              <button type="button" class="btn2 btn-danger" (click)="destroyH(detailHand.idDetailHand!)"
+                routerLinkActive="router-link-active" label="Ver">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Total:</td>
+            <td>{{totalPrice}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-info" (click)="sum()"
+        routerLinkActive="router-link-active" label="Ver">
+        <mat-icon>monetization_on</mat-icon>Sumar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Crear Detalle Material -->
+<div class="popup" *ngIf="isPopupVisible1">
+  <div id="formulario" class="popup-inner">
+    <h2>Material Usado</h2>
+    <form [formGroup]="myForm" (ngSubmit)="store()" class="p-fluid">
+      <div class="field">
+        <label for="idQuotation">Cotización: </label>
+        <input type="number" id="idQuotation" formControlName="idQuotation" optionValue="idQuotation" readonly>
+      </div>
+      <div class="field">
+        <label for="idMaterial">Material: </label>
+        <p-dropdown id="idMaterial" [options]="materials" formControlName="idMaterial" optionLabel="nameMaterial"
+          optionValue="idMaterial" [(ngModel)]="sMaterial" (onChange)="selectedMaterial(sMaterial)">
+        </p-dropdown>
+      </div>
+      <div class="field">
+        <label class="label" for="name">Tipo de Material:</label>
+        <input type="text" id="typeMaterial" formControlName="typeMaterial" readonly [(ngModel)]="selectedType"
+          (onChange)="onSelectedOption($event)">
+      </div>
+      <div *ngIf="selectedType === 'Longitud'">
+        <div class="field">
+          <label for="unitMeasure">Unidad de Medida: </label>
+          <p-dropdown id="unitMeasure" [options]="unitL" formControlName="idUnitMeasure" [(ngModel)]="longitude"
+            optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+          </p-dropdown>
+        </div>
+        <div class="field">
+          <label class="label" for="widthDetail">Ancho del material:</label>
+          <input pInputText id="widthDetail" type="number" formControlName="widthDetail">
+          <p-message *ngIf="widthField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+          </p-message>
+          <p-message *ngIf="widthField.errors?.['min']" severity="error" text="Mínimo 0.1">
+          </p-message>
+          <p-message *ngIf="widthField.errors?.['max']" severity="error" text="Máximo 500">
+          </p-message>
+          <i *ngIf="widthField.valid" class="pi pi-check-circle"></i>
+        </div>
+        <div class="field">
+          <label class="label" for="lengthDetail">Largo del material:</label>
+          <input pInputText id="lengthDetail" type="number" formControlName="lengthDetail">
+          <p-message *ngIf="lengthField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+          </p-message>
+          <p-message *ngIf="lengthField.errors?.['min']" severity="error" text="Mínimo 0.1">
+          </p-message>
+          <p-message *ngIf="lengthField.errors?.['max']" severity="error" text="Máximo 500">
+          </p-message>
+          <i *ngIf="lengthField.valid" class="pi pi-check-circle"></i>
+        </div>
+      </div>
+      <div *ngIf="selectedType === 'Peso'">
+        <div class="field">
+          <label for="unitMeasure">Unidad de Medida: </label>
+          <p-dropdown id="unitMeasure" [options]="unitP" formControlName="idUnitMeasure" [(ngModel)]="weight"
+            optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+          </p-dropdown>
+        </div>
+        <div class="field">
+          <label class="label" for="weightDetail">Peso:</label>
+          <input pInputText id="weightDetail" type="number" formControlName="weightDetail">
+          <p-message *ngIf="weightField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+          </p-message>
+          <p-message *ngIf="weightField.errors?.['min']" severity="error" text="Mínimo 0.1">
+          </p-message>
+          <p-message *ngIf="weightField.errors?.['max']" severity="error" text="Máximo 5000">
+          </p-message>
+          <i *ngIf="weightField.valid" class="pi pi-check-circle"></i>
+        </div>
+      </div>
+      <div *ngIf="selectedType === 'Cantidad'">
+        <div class="field">
+          <label for="unitMeasure">Unidad de Medida: </label>
+          <p-dropdown id="unitMeasure" [options]="unitC" formControlName="idUnitMeasure" [(ngModel)]="quantity"
+            optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+          </p-dropdown>
+        </div>
+        <div class="field">
+          <label class="label" for="quantityDetail">Cantidad:</label>
+          <input pInputText id="quantityDetail" type="number" formControlName="quantityDetail">
+          <p-message *ngIf="quantityField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+          </p-message>
+          <p-message *ngIf="quantityField.errors?.['pattern']" severity="error" text="Debe ingresar un número entero">
+          </p-message>
+          <p-message *ngIf="quantityField.errors?.['min']" severity="error" text="Mínimo 1">
+          </p-message>
+          <p-message *ngIf="quantityField.errors?.['max']" severity="error" text="Máximo 5000">
+          </p-message>
+          <i *ngIf="quantityField.valid" class="pi pi-check-circle"></i>
+        </div>
+      </div>
+      <div *ngIf="selectedType === 'Volumen'">
+        <div class="field">
+          <label for="unitMeasure">Unidad de Medida: </label>
+          <p-dropdown id="unitMeasure" [options]="unitV" formControlName="idUnitMeasure" [(ngModel)]="volume"
+            optionLabel="nameUnitMeasure" optionValue="idUnitMeasure">
+          </p-dropdown>
+        </div>
+        <div class="field">
+          <label class="label" for="weightDetail">Volumen del material:</label>
+          <input pInputText id="weightDetail" type="number" formControlName="weightDetail">
+          <p-message *ngIf="weightField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+          </p-message>
+          <p-message *ngIf="weightField.errors?.['min']" severity="error" text="Mínimo 0.1">
+          </p-message>
+          <p-message *ngIf="weightField.errors?.['max']" severity="error" text="Máximo 5000">
+          </p-message>
+          <i *ngIf="weightField.valid" class="pi pi-check-circle"></i>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" routerLinkActive="router-link-active">Guardar</button>
+    </form>
+    <button class="close-btn" (click)="togglePopup()">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Crear Detalle Mano de Obra -->
+<div class="popup" *ngIf="isPopupVisible2">
+  <div id="formulario" class="popup-inner">
+    <h2>Mano de obra Usado</h2>
+    <form [formGroup]="myForm2" (ngSubmit)="storeH()" class="p-fluid">
+      <div class="field">
+        <label for="idQuotation">Cotización: </label>
+        <input type="number" id="idQuotation" formControlName="idQuotation" optionValue="idQuotation" readonly>
+      </div>
+      <div class="field">
+        <label for="idHandWork">Mano de Obra: </label>
+        <p-dropdown id="idHandWork" [options]="hands" formControlName="idHandWork" optionLabel="nameHandWork"
+          optionValue="idHandWork">
+        </p-dropdown>
+      </div>
+      <div id="hours" class="field">
+        <label for="hours">Horas:</label>
+        <input pInputText type="number" formControlName="hours">
+        <p-message *ngIf="hoursField.errors?.['pattern']" severity="error" text="Debe ingresar un número entero">
+        </p-message>
+        <p-message *ngIf="hoursField.errors?.['min']" severity="error" text="Mínimo 0">
+        </p-message>
+        <p-message *ngIf="hoursField.errors?.['max']" severity="error" text="Máximo 100">
+        </p-message>
+        <i *ngIf="hoursField.valid" class="pi pi-check-circle"></i>
+      </div>
+
+      <div id="minutes" class="field">
+        <label for="minutes">Minutos:</label>
+        <input pInputText type="number" formControlName="minutes">
+        <p-message *ngIf="minutesField.errors?.['pattern']" severity="error" text="Debe ingresar un número entero">
+        </p-message>
+        <p-message *ngIf="minutesField.errors?.['min']" severity="error" text="Mínimo 0">
+        </p-message>
+        <p-message *ngIf="minutesField.errors?.['max']" severity="error" text="Máximo 500">
+        </p-message>
+        <i *ngIf="minutesField.valid" class="pi pi-check-circle"></i>
+      </div>
+
+      <button type="submit" class="btn btn-primary" routerLinkActive="router-link-active">Guardar</button>
+    </form>
+    <button class="close-btn" (click)="togglePopup2()">Cerrar</button>
+  </div>
+</div>

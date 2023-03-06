@@ -1,0 +1,149 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Mano de Obra</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div>
+      <button type="button" class="btn btn-success" (click)="togglePopup()">
+        <mat-icon>add_circle_outline</mat-icon> Crear Nuevo
+      </button>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Salario</th>
+            <th>Horas Mes</th>
+            <th>Valor Hora</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hand of hands">
+            <td>{{hand.nameHandWork}}</td>
+            <td>{{hand.salary}}</td>
+            <td>{{hand.hoursMonth}}</td>
+            <td>{{hand.priceHour}}</td>
+            <td>
+              <button type="button" class="btn2 btn-info" (click)="togglePopupEditar(); show(hand.idHandWork!)"
+                routerLinkActive="router-link-active" label="Ver">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button type="button" class="btn2 btn-danger" (click)="destroy(hand.idHandWork!)"
+                routerLinkActive="router-link-active" label="Ver">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Crear nuevo -->
+<div class="popup" *ngIf="isPopupVisible1">
+  <div id="formulario" class="popup-inner">
+    <h2>Nueva Mano de Obra</h2>
+    <form [formGroup]="myForm" (ngSubmit)="store()" class="p-fluid">
+      <div id="nombre" class="field">
+        <label for="nameHandWork"> Nombre* </label>
+        <input pInputText type="text" formControlName="nameHandWork">
+        <p-message *ngIf="nameHandField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+        </p-message>
+        <p-message *ngIf="nameHandField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+        </p-message>
+        <p-message *ngIf="nameHandField.errors?.['maxlength']" severity="error" text="Máximo 100 caracteres">
+        </p-message>
+        <i *ngIf="nameHandField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <div id="descriptionHandWork" class="field">
+        <label for="descriptionHandWork"> Descripción </label>
+        <input pInputText type="text" formControlName="descriptionHandWork">
+        <p-message *ngIf="descriptionField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+        </p-message>
+        <p-message *ngIf="descriptionField.errors?.['maxlength']" severity="error" text="Máximo 200 caracteres">
+        </p-message>
+        <i *ngIf="descriptionField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <div id="salary" class="field">
+        <label for="salary"> Salario* </label>
+        <input pInputText type="number" formControlName="salary">
+        <p-message *ngIf="salaryField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+        </p-message>
+        <p-message *ngIf="salaryField.errors?.['min']" severity="error" text="Mínimo 0.1">
+        </p-message>
+        <p-message *ngIf="salaryField.errors?.['max']" severity="error" text="Máximo 1000">
+        </p-message>
+        <i *ngIf="salaryField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <div id="hoursMonth" class="field">
+        <label for="hoursMonth"> Horas al Mes* </label>
+        <input pInputText type="number" formControlName="hoursMonth">
+        <p-message *ngIf="hoursMonthField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+        </p-message>
+        <p-message *ngIf="hoursMonthField.errors?.['pattern']" severity="error" text="Debe ingresar un número entero">
+        </p-message>
+        <p-message *ngIf="hoursMonthField.errors?.['min']" severity="error" text="Mínimo 1">
+        </p-message>
+        <p-message *ngIf="hoursMonthField.errors?.['max']" severity="error" text="Máximo 500">
+        </p-message>
+        <i *ngIf="hoursMonthField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <button type="submit" class="btn btn-primary" routerLinkActive="router-link-active">Guardar</button>
+    </form>
+    <button class="close-btn" (click)="togglePopup()">Cerrar</button>
+  </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="popup" *ngIf="isPopupVisible2">
+  <div id="formulario" class="popup-inner">
+    <h2>Editar Mano de Obra</h2>
+    <form [formGroup]="myForm" (ngSubmit)="update()" class="p-fluid">
+      <div id="nombre" class="field">
+        <label for="nameHandWork"> Nombre* </label>
+        <input pInputText type="text" formControlName="nameHandWork">
+        <p-message *ngIf="nameHandField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+        </p-message>
+        <p-message *ngIf="nameHandField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+        </p-message>
+        <p-message *ngIf="nameHandField.errors?.['maxlength']" severity="error" text="Máximo 100 caracteres">
+        </p-message>
+        <i *ngIf="nameHandField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <div id="descriptionHandWork" class="field">
+        <label for="descriptionHandWork"> Descripción </label>
+        <input pInputText type="text" formControlName="descriptionHandWork">
+        <p-message *ngIf="descriptionField.errors?.['minlength']" severity="error" text="Mínimo 2 caracteres">
+        </p-message>
+        <p-message *ngIf="descriptionField.errors?.['maxlength']" severity="error" text="Máximo 200 caracteres">
+        </p-message>
+        <i *ngIf="descriptionField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <div id="salary" class="field">
+        <label for="salary"> Salario* </label>
+        <input pInputText type="number" formControlName="salary">
+        <p-message *ngIf="salaryField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+        </p-message>
+        <p-message *ngIf="salaryField.errors?.['min']" severity="error" text="Mínimo 0.1">
+        </p-message>
+        <p-message *ngIf="salaryField.errors?.['max']" severity="error" text="Máximo 1000">
+        </p-message>
+        <i *ngIf="salaryField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <div id="hoursMonth" class="field">
+        <label for="hoursMonth"> Horas al Mes* </label>
+        <input pInputText type="number" formControlName="hoursMonth">
+        <p-message *ngIf="hoursMonthField.errors?.['required']" severity="error" text="Este campo es obligatorio">
+        </p-message>
+        <p-message *ngIf="hoursMonthField.errors?.['pattern']" severity="error" text="Debe ingresar un número entero">
+        </p-message>
+        <p-message *ngIf="hoursMonthField.errors?.['min']" severity="error" text="Mínimo 1">
+        </p-message>
+        <p-message *ngIf="hoursMonthField.errors?.['max']" severity="error" text="Máximo 500">
+        </p-message>
+        <i *ngIf="hoursMonthField.valid" class="pi pi-check-circle"></i>
+      </div>
+      <button type="submit" class="btn btn-primary" routerLinkActive="router-link-active">Guardar</button>
+    </form>
+    <button class="close-btn" (click)="togglePopupEditar()">Cerrar</button>
+  </div>
+</div>

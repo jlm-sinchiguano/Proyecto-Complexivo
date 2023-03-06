@@ -1,0 +1,40 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Materiales</div>
+  <div class="page__content shadow p-3 position-relative">
+
+    <div>
+      <button type="submit" class="btn btn-success">
+        <a class="a" routerLink='/create-material'>
+          <mat-icon class="iconC">add_circle_outline</mat-icon> Crear Material
+        </a>        
+      </button>
+    </div>
+
+    <section style="background-color: #eee;">
+      <div class="py-5">
+        <div class="container">
+          <section class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col-md-4" *ngFor="let material of materials">
+              <div class="card h-100 text-center">
+                <div class="card-body">
+                  <h5 class="card-title">{{material.unitMeasure?.idtypeMaterial?.nameTypeMaterial}}</h5>
+                  <span>{{material.nameMaterial}}</span>
+                  <h4 class="mb-1 me-1 text-center">${{material.priceMaterial}}</h4>
+                  <h6 class="text-success">Precio Material</h6>
+                  <div>
+                    <button type="submit" class="btnE btn-info" routerLinkActive="router-link-active" label="Ver">          
+                        <mat-icon class="iconE" routerLink='/edit-material/{{material.idMaterial}}'>edit</mat-icon>
+                    </button>
+                    <button type="button" class="btnE btn-danger" (click)="destroy(material.idMaterial!)" routerLinkActive="router-link-active" label="Ver">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
